@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Rubik-Regular';
+  src: url('../public/fonts/Rubik/Rubik-Regular.ttf') format('ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik-Bold';
+  src: url('../public/fonts/Rubik/Rubik-Bold.ttf') format('ttf');
+  font-weight: 700;
+}
+
+.logo-container {
+  font-family: 'Rubik-Regular', sans-serif;
+  letter-spacing: 5px;
+}
+
+.logo-container p {
+  padding-top: 10px;
+}
+
+/*.footer-bg-container{*/
+/*  background-image: url("/footer.svg");*/
+/*  background-repeat: no-repeat;*/
+/*  background-size: contain;*/
+/*}*/
+
+.main-footer{
+  min-height: 435px;
+  min-width: 100vw;
+
+}
+
+.footer-logo-container{
+  font-family: 'Rubik-Bold', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+
+}
