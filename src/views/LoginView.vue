@@ -1,9 +1,7 @@
-<script setup>
-import FooterComponent from '@/components/FooterComponent.vue'
-</script>
+
 
 <template>
-  <main class="flex flex-col h-screen items-center justify-between">
+  <main class="flex flex-col h-screen items-center justify-between main-bg">
     <!-- <label for="hs-color-input" class="block text-sm font-medium mb-2">Color picker</label>
     <input
       type="color"
@@ -12,22 +10,24 @@ import FooterComponent from '@/components/FooterComponent.vue'
       value="#2563eb"
       title="Choose your color"
     /> -->
-    <section class="w-screen flex justify-between p-10 flex-col">
+    <section class="w-full">
       <div class="flex justify-center">
         <div class="logo-container flex items-center flex-col">
           <img width="195" height="180" src="/LOGO.svg" alt="logo" />
           <p class="text-4xl">ПортХаб</p>
         </div>
       </div>
-      <div class="flex min-h-full flex-col justify-center lg:px-8">
-        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" action="#" method="POST">
+      <div class="flex min-h-full flex-col justify-center ">
+        <div class="mt-5 sm:mx-auto sm:w-full sm:max-w-sm block-box px-14 py-16 bg-white">
+          <form @submit.prevent="handleSubmit" class="space-y-6 " action="#" method="POST">
+            <h2 class="sm:text-2xl">Вход в порт</h2>
             <div>
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
-                >Логин</label
+                >Email</label
               >
               <div class="mt-2">
                 <input
+                  v-model="email"
                   id="email"
                   name="email"
                   type="email"
@@ -45,12 +45,13 @@ import FooterComponent from '@/components/FooterComponent.vue'
                 >
                 <div class="text-sm">
                   <a href="#" class="font-semibold text-sky-500 hover:text-sky-400"
-                    >Забыл пароль?</a
+                    >Забыли пароль?</a
                   >
                 </div>
               </div>
               <div class="mt-2">
                 <input
+                  v-model="password"
                   id="password"
                   name="password"
                   type="password"
@@ -69,15 +70,26 @@ import FooterComponent from '@/components/FooterComponent.vue'
                 >
                   Войти
                 </button>
-                <button
-                  type="submit"
-                  class="flex w-full justify-center rounded-md bg-sky-500 ml-2 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Зарегестрироваться
-                </button>
+
               </div>
+              <div class="text-sm text-center mt-2">
+                <router-link to="/register" class="font-semibold text-sky-500 hover:text-sky-400"
+                >Регистрация</router-link
+                >
+              </div>
+
             </div>
           </form>
+          <div @click="handleReset" class="text-sm text-center mt-2">
+            <button class="font-semibold text-sky-500 hover:text-sky-400"
+            >Reset</button
+            >
+          </div>
+          <div @click="handleSet" class="text-sm text-center mt-2">
+            <button class="font-semibold text-sky-500 hover:text-sky-400"
+            >Set</button
+            >
+          </div>
         </div>
       </div>
     </section>
@@ -85,3 +97,53 @@ import FooterComponent from '@/components/FooterComponent.vue'
   </main>
 
 </template>
+<script>
+
+import axiosInstance from '@/axiosInstance.js'
+import FooterComponent from '@/components/FooterComponent.vue'
+
+
+export default {
+  name: 'HelloWorld',
+  components: { FooterComponent },
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    handleSubmit() {
+      const data = {
+        email: this.email,
+        password: this.password
+      }
+      console.log(data)
+      axiosInstance.post("/Authentication/login", data)
+        .then(
+          (rez) => {
+            console.log(rez.data)
+            localStorage.setItem('token', rez.data.token)
+            if(this.$route.query.redirect) {
+              this.$router.push(this.$route.query.redirect)
+            }else {
+              this.$router.push('/profile')
+            }
+          }
+        )
+    },
+    handleReset(){
+      localStorage.removeItem('token')
+    },
+    handleSet(){
+      localStorage.setItem('token', "jopa")
+    }
+  }
+}
+</script>
+
+<style>
+ form h2{
+   text-align: center;
+ }
+</style>
