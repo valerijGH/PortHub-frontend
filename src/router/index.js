@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
-import HelloWorld from '@/components/HelloWorld.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import ProfileLibraryView from '@/views/ProfileLibraryView.vue'
 import ProjectView from '@/views/ProjectView.vue'
+
+import FavoritesView from '@/views/FavoritesView.vue'
 
 
 const router = createRouter({
@@ -13,11 +14,6 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: HelloWorld
     },
     {
       path: '/register',
@@ -33,32 +29,42 @@ const router = createRouter({
       component: ProfileView
     },
     {
-      path: '/profile-lib',
+      path: '/',
       name: 'profile-lib',
       component: ProfileLibraryView
     },
     {
-      path: '/project',
-      name: 'project',
-      component: ProjectView
+      path: '/project/:id',
+      name: 'ProjectView',
+      component: ProjectView,
+      props: true
+    },
+    {
+      path: '/favorites',
+      name: 'favorites',
+      component: FavoritesView
     },
   ]
 })
 
 const isLoggedIn = () => {
-  return localStorage.getItem('token')
+  return localStorage.getItem('accessToken') ;
 }
 const protectedRoutes = [
   "profile",
+  "favorites"
 ]
 
 router.beforeEach((to, from, next) => {
   const isProtected = protectedRoutes.includes(to.name)
-  if(isProtected && !isLoggedIn()){
-    next({
-      path: '/login'
-    })
-  }else next()
+
+  if (isProtected && !isLoggedIn()) {
+    next({ path: '/login' })
+  } else if ((to.name === 'login' || to.name === 'register') && isLoggedIn()) {
+    next({ path: '/' })
+  } else {
+    next()
+  }
 })
 
 

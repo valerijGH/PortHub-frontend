@@ -2,7 +2,7 @@ import axios from "axios";
 import { createRouter as $router } from 'vue-router'
 
 const baseInstance = axios.create({
-  baseURL: "https://excited-pipefish-44.rshare.io/api",
+  baseURL: "http://localhost:8080/api",
   headers: {
     common: {
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,

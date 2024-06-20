@@ -21,15 +21,25 @@
 <style>
   .main-footer{
     min-width: 100%;
-    background: url("/footer.svg") no-repeat ;
+
     background-size: 100%;
     min-height: 210px;
     margin-top: 100px;
+    position: relative;
   }
 
   .footer-logo-container {
     font-family: 'Rubik-Bold', sans-serif;
     font-weight: 700;
     font-size: 20px;
+  }
+
+  .footer-bg-container{
+    position: absolute;
+    bottom: 0;
+    background: url("/footer.svg") no-repeat center;
+    width: 100%;
+    background-size: cover;
+    background-position-y: top;
   }
 </style>
